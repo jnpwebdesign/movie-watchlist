@@ -1,0 +1,168 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: white;
+}
+
+body {
+    font-family:'Inter', sans-serif;
+}
+header {
+    background-image: url("images/THJJRUhNlEc.png");
+    background-size: cover;
+    height: 208px;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: baseline;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-top: 50px;
+}
+
+#my-watchlist-btn {
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    background-color: transparent;
+    color: white;
+}
+
+.search-movies-form {
+    display: flex;
+    align-items:flex-end;
+    justify-content: center;
+}
+
+.magnifying-glass-container {
+    height: 38px;
+    background-color: #2E2E2F;
+}
+
+#search-input {
+    height: 38px;
+    width: 300px;
+    background-color: #2E2E2F;
+    border: none;
+    color: #A5A5A5;
+    font-size: 14px;
+    font-weight: 500;
+    margin-right: 0;
+}
+
+#search-btn {
+    height: 38px;
+    width: 120px;
+    background-color: #4B4B4B;
+    border: none;
+    color: white;
+    margin-left: 0;
+    cursor: pointer;
+}
+
+#search-btn:active {
+    padding-top: 2px;
+}
+
+/*----------- main -------------*/
+
+
+.search-results-container {
+    width: 84%;
+    display: flex;
+    flex-direction: column;
+    margin: 40px auto 10px auto;
+}
+
+.movie-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 25px;
+    padding-top: 30px;
+    border-top: 1px solid #242424;
+}
+
+.movie-container:first-of-type {
+    border: none;
+}
+
+.movie-details-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+}
+
+.movie-title-container, .movie-info-container, .movie-synopsis {
+    margin-top: 15px;
+}
+
+.movie-title-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: baseline;
+}
+
+h2 {
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0;
+}
+
+.star-icon {
+    margin-left: 15px;
+}
+.imdb-rating {
+    font-size: 12px;
+    font-weight: 400;
+    margin-left: 5px;
+}
+
+.movie-info-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.run-time, .number-of-minutes, .genres, .add-to-watchlist-btn {
+    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+}
+
+.run-time, .genres, .add-to-watchlist-btn {
+    margin: 0 15px 0 0;
+    padding: 0;
+}
+
+.genres {
+
+}
+
+
+.add-to-watchlist-btn {
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+}
+
+.plus-icon {
+    margin-right: 5px;
+}
+
+.movie-synopsis {
+    font-size: 14px;
+    line-height: 20px;
+    color: #A5A5A5;
+    font-family: 'Inter', sans-serif;
+    margin-right: 10px;
+}

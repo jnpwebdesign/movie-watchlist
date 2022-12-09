@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Watchlist</title>
+<!-- font awesome -->    
+    <script src="https://kit.fontawesome.com/7d06af126b.js" crossorigin="anonymous"></script>
+<!-- link to css-->    
+    <link rel="stylesheet" href="styles.css">
+<!-- google font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="title-container">
+            <h1>Find your film</h1>
+            <button id="my-watchlist-btn">My Watchlist</button>
+        </div>
+        <form id="search-movies-form" class="search-movies-form">
+            <div class="magnifying-glass-container">
+                <img src="images/magnifying-glass.png" class="magnifying-glass">
+            </div>
+            <input type="search" id="search-input" name="search-input" aria-label="search movie database" placeholder="Encanto">
+            <button type="submit" id="search-btn">Search</button>
+        </form>
+    </header>
+    <main class="search-results-container">
+        <!-- <div class="movie-container" id="movie-container">
+            <img src="" class="movie-poster" height="147px" width="99px">
+            <div class="movie-details-container">
+                <div class="movie-title-container">
+                    <h2 class="movie-title">Movie Title <img src="images/imdb-star.png"><span class="imdb-rating">6.0</span></h2>
+                </div>
+                <div class="movie-info-container">
+                    <p class="run-time"><span class="number-of-minutes">100</span> min</p>
+                    <p class="genres">genre1, genre2, genre3</p>
+                    <button class="add-to-watchlist-btn"><img src="images/plus-button.png" class="plus-icon">Watchlist</button>
+                </div>
+                <p class="movie-synopsis">Generate Lorem Ipsum placeholder text. Select the number of characters, words, sentences or paragraphs, and hit generate!</p>
+            </div>
+        </div> -->
+    </main>
+<!-- link to JS file -->
+    <script src="javascript.js" type="module"> </script>
+</body>
+</html>
