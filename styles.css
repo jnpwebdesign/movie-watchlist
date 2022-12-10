@@ -12,6 +12,9 @@ header {
     background-image: url("images/THJJRUhNlEc.png");
     background-size: cover;
     height: 208px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .title-container {
@@ -38,11 +41,18 @@ h1 {
     display: flex;
     align-items:flex-end;
     justify-content: center;
+    margin-top: auto;
+    margin-bottom: -20px;
 }
 
 .magnifying-glass-container {
     height: 38px;
+    width: 30px;
     background-color: #2E2E2F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #A5A5A5
 }
 
 #search-input {
@@ -54,6 +64,10 @@ h1 {
     font-size: 14px;
     font-weight: 500;
     margin-right: 0;
+}
+
+#search-input:focus {
+    background-color: #2E2E2F;
 }
 
 #search-btn {
