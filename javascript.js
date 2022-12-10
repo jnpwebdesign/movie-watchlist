@@ -25,7 +25,7 @@ async function getDetailedMovieData(movieArray) {
         const res = await fetch(`http://www.omdbapi.com/?i=${movieArray[i].imdbID}&apikey=c92898b8`)
         data = await res.json()
         console.log(data);
-        renderHTML(data);
+
                 searchResultsContainer.innerHTML += `
                 <div class="movie-container" id="movie-container">
                     <img src="${data.Poster}" class="movie-poster" height="147px" width="99px">
