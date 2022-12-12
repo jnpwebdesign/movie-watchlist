@@ -51,12 +51,12 @@ function renderHTML(detailedMovieArray) {
             </div>
         `
     }
-    chooseWatchlistMovies();
+    chooseWatchlistMovies(detailedMovieArray);
 }
 
 
 //adds/deletes chosen movies to watchlist
-function chooseWatchlistMovies() {
+function chooseWatchlistMovies(detailedMovieArray) {
 
     searchResultsContainer.addEventListener("click", function(e) { 
         if (e.target.dataset.imdb) {
@@ -67,15 +67,25 @@ function chooseWatchlistMovies() {
                 document.getElementById(`add-to-watchlist-btn-${currentMovie}`).disabled;
                 document.getElementById(`add-to-watchlist-btn-${currentMovie}`).classList.toggle("grayed-out");
                 document.getElementById(`watchlist-btn-image-${currentMovie}`).classList.toggle("grayed-out");
-                console.log(watchListArray);
-             } else  if (watchListArray.indexOf(currentMovie) >= 0 ) {
+                for (let movie of detailedMovieArray) {
+                    if (movie.imdbID === currentMovie) {
+                        localStorage.setItem(`${currentMovie}`, JSON.stringify(movie));
+                    }
+                }
+                console.log(watchListArray);       
+             } else if (watchListArray.indexOf(currentMovie) >= 0 ) {
                 document.getElementById(`add-to-watchlist-btn-${currentMovie}`).classList.toggle("grayed-out");
                 document.getElementById(`watchlist-btn-image-${currentMovie}`).classList.toggle("grayed-out");
                 document.getElementById(`watchlist-btn-image-${currentMovie}`).disabled === false;
                 document.getElementById(`add-to-watchlist-btn-${currentMovie}`).disabled === false;
                 watchListArray.splice(watchListArray.indexOf(currentMovie), 1);
+                for (let movie of detailedMovieArray) {
+                    if (movie.imdbID === currentMovie) {
+                        localStorage.removeItem(`${currentMovie}`);
+                    }
+                }  
                 console.log(watchListArray);
-             }
+            }
     
         }
     });
@@ -104,8 +114,25 @@ async function getWatchList(watchListArray) {
     renderHTML(watchListArrayDetails); 
 }
 
-document.getElementById("view-my-watchlist-btn").addEventListener("click", function(watchListArray){
-    console.log(watchListArray);
+document.getElementById("view-my-watchlist-btn").addEventListener("click", function(e){
+    if (watchListArray.length === 0){
+        searchResultsContainer.innerHTML = `
+            <p class="no-watchlist">No watchlist yet. 
+                <br> 
+                <br> Use the box above to search for movies, then click the <img src="images/plus-button.png" class="plus-icon-watchlist"> Watchlist button to add them to your watchlist.
+            </p>
+        `
+    } else {
+        searchResultsContainer.innerHTML = "";
+        for (let i = 0; i < watchListArray.length; i++) {
+            fetch(`http://www.omdbapi.com/?i=${watchListArray[i].imdbID}&apikey=c92898b8`)
+                .then (res => res.json())
+                .then(data => {
+                    console.log(data);
+                });
+        }   
+    }
+
 }); 
 
 
