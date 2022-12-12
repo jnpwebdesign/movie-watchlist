@@ -59,7 +59,6 @@ function renderHTML(detailedMovieArray) {
 function chooseWatchlistMovies() {
 
     searchResultsContainer.addEventListener("click", function(e) { 
-
         if (e.target.dataset.imdb) {
             let currentMovie = e.target.dataset.imdb
              if(watchListArray.indexOf(currentMovie) === -1) {
