@@ -61,19 +61,20 @@ function chooseWatchlistMovies() {
     searchResultsContainer.addEventListener("click", function(e) { 
 
         if (e.target.dataset.imdb) {
-             if(watchListArray.indexOf(e.target.dataset.imdb) === -1) {
-                watchListArray.push(e.target.dataset.imdb);
-                document.getElementById(`watchlist-btn-image-${e.target.dataset.imdb}`).disabled;
-                document.getElementById(`add-to-watchlist-btn-${e.target.dataset.imdb}`).disabled;
-                document.getElementById(`add-to-watchlist-btn-${e.target.dataset.imdb}`).classList.toggle("grayed-out");
-                document.getElementById(`watchlist-btn-image-${e.target.dataset.imdb}`).classList.toggle("grayed-out");
+            let currentMovie = e.target.dataset.imdb
+             if(watchListArray.indexOf(currentMovie) === -1) {
+                watchListArray.push(currentMovie);
+                document.getElementById(`watchlist-btn-image-${currentMovie}`).disabled;
+                document.getElementById(`add-to-watchlist-btn-${currentMovie}`).disabled;
+                document.getElementById(`add-to-watchlist-btn-${currentMovie}`).classList.toggle("grayed-out");
+                document.getElementById(`watchlist-btn-image-${currentMovie}`).classList.toggle("grayed-out");
                 console.log(watchListArray);
-             } else  if (watchListArray.indexOf(e.target.dataset.imdb) >= 0 ) {
-                document.getElementById(`add-to-watchlist-btn-${e.target.dataset.imdb}`).classList.toggle("grayed-out");
-                document.getElementById(`watchlist-btn-image-${e.target.dataset.imdb}`).classList.toggle("grayed-out");
-                document.getElementById(`watchlist-btn-image-${e.target.dataset.imdb}`).disabled === false;
-                document.getElementById(`add-to-watchlist-btn-${e.target.dataset.imdb}`).disabled === false;
-                watchListArray.splice(watchListArray.indexOf(e.target.dataset.imdb), 1);
+             } else  if (watchListArray.indexOf(currentMovie) >= 0 ) {
+                document.getElementById(`add-to-watchlist-btn-${currentMovie}`).classList.toggle("grayed-out");
+                document.getElementById(`watchlist-btn-image-${currentMovie}`).classList.toggle("grayed-out");
+                document.getElementById(`watchlist-btn-image-${currentMovie}`).disabled === false;
+                document.getElementById(`add-to-watchlist-btn-${currentMovie}`).disabled === false;
+                watchListArray.splice(watchListArray.indexOf(currentMovie), 1);
                 console.log(watchListArray);
              }
     
