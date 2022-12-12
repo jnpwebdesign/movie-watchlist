@@ -29,12 +29,13 @@ h1 {
     margin-top: 50px;
 }
 
-#my-watchlist-btn {
+.view-my-watchlist-btn {
     font-size: 1rem;
     font-weight: 700;
     border: none;
     background-color: transparent;
     color: white;
+    cursor: pointer;
 }
 
 .search-movies-form {
