@@ -53,7 +53,6 @@ function renderHTML(detailedMovieArray) {
     chooseWatchlistMovies(detailedMovieArray);
 }
 
-
 //adds/deletes chosen movies to watchlist and local storage
 function chooseWatchlistMovies(detailedMovieArray) {
     searchResultsContainer.addEventListener("click", function(e) { 
@@ -89,7 +88,6 @@ function chooseWatchlistMovies(detailedMovieArray) {
 
 //display empty watchList message
 const displayEmptyWatchListMessage = () => {
-        console.log("empty")
             searchResultsContainer.innerHTML = `
                 <p class="no-watchlist">No watchlist yet. 
                     <br> 
@@ -139,10 +137,8 @@ function renderWatchListHTML(detailedMovieArray) {
     }
     searchResultsContainer.addEventListener("click", function(e){
         if (e.target.dataset.imdb) {
-            console.log(e.target.dataset.imdb);
             localStorage.removeItem(`${e.target.dataset.imdb}`);
             getWatchList();
-
         }
     });
     
