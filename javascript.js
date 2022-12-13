@@ -4,8 +4,7 @@ const form = document.getElementById("search-movies-form");
 const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-btn");
 const searchResultsContainer = document.querySelector("main");
-let watchListArray = [];
-let watchListArrayDetails = [];
+let watchListKeys = [];
 
 
 //search button searches API for the input from user, returns array of objects with minimal properties for each movie
@@ -57,38 +56,35 @@ function renderHTML(detailedMovieArray) {
 
 //adds/deletes chosen movies to watchlist and local storage
 function chooseWatchlistMovies(detailedMovieArray) {
-
     searchResultsContainer.addEventListener("click", function(e) { 
         if (e.target.dataset.imdb) {
             let currentMovie = e.target.dataset.imdb
-             if(watchListArray.indexOf(currentMovie) === -1) {
-                watchListArray.push(currentMovie);
-                document.getElementById(`watchlist-btn-image-${currentMovie}`).disabled;
-                document.getElementById(`add-to-watchlist-btn-${currentMovie}`).disabled;
-                document.getElementById(`add-to-watchlist-btn-${currentMovie}`).classList.toggle("grayed-out");
-                document.getElementById(`watchlist-btn-image-${currentMovie}`).classList.toggle("grayed-out");
+            watchListKeys = Object.keys(localStorage);
+            if (watchListKeys.indexOf(currentMovie) === -1) {
                 for (let movie of detailedMovieArray) {
                     if (movie.imdbID === currentMovie) {
                         localStorage.setItem(`${currentMovie}`, JSON.stringify(movie));
+                        document.getElementById(`watchlist-btn-image-${currentMovie}`).disabled;
+                        document.getElementById(`add-to-watchlist-btn-${currentMovie}`).disabled;
+                        document.getElementById(`add-to-watchlist-btn-${currentMovie}`).classList.toggle("grayed-out");
+                        document.getElementById(`watchlist-btn-image-${currentMovie}`).classList.toggle("grayed-out");        
                     }
-                }
-                console.log(watchListArray);       
-             } else if (watchListArray.indexOf(currentMovie) >= 0 ) {
-                document.getElementById(`add-to-watchlist-btn-${currentMovie}`).classList.toggle("grayed-out");
-                document.getElementById(`watchlist-btn-image-${currentMovie}`).classList.toggle("grayed-out");
-                document.getElementById(`watchlist-btn-image-${currentMovie}`).disabled === false;
-                document.getElementById(`add-to-watchlist-btn-${currentMovie}`).disabled === false;
-                watchListArray.splice(watchListArray.indexOf(currentMovie), 1);
+                }       
+             } else if (watchListKeys.indexOf(currentMovie) >= 0 ) {
                 for (let movie of detailedMovieArray) {
                     if (movie.imdbID === currentMovie) {
                         localStorage.removeItem(`${currentMovie}`);
+                        document.getElementById(`add-to-watchlist-btn-${currentMovie}`).classList.toggle("grayed-out");
+                        document.getElementById(`watchlist-btn-image-${currentMovie}`).classList.toggle("grayed-out");
+                        document.getElementById(`watchlist-btn-image-${currentMovie}`).disabled === false;
+                        document.getElementById(`add-to-watchlist-btn-${currentMovie}`).disabled === false;    
                     }
                 }  
-                console.log(watchListArray);
+            
             }
-        }
+        }  
     });
-    return watchListArray;
+    return watchListKeys;
 }
 
 //display empty watchList message
@@ -101,28 +97,29 @@ const displayEmptyWatchListMessage = () => {
                 </p>
             `
 }
-    
 
-
+//message if user clicks on "My Watchlist" and it's empty
 document.getElementById("view-my-watchlist-btn").addEventListener("click", function(e){
     if (localStorage.length === 0){
         displayEmptyWatchListMessage();
     } else {
-        let watchListKeysArray = Object.keys(localStorage);
-        let watchListObjectArray = watchListKeysArray.map(function(key) {
-        return JSON.parse(localStorage.getItem(key));
-        })    
-        console.log(watchListObjectArray);
-        searchResultsContainer.innerHTML = "";
-        renderWatchListHTML(watchListObjectArray);
+        getWatchList();
     }
-
 })
 
+//pulls watchlist movies out of local storage and sends them to be printed
+function getWatchList() {
+    let watchListKeysArray = Object.keys(localStorage);
+    let watchListObjectArray = watchListKeysArray.map(function(key) {
+        return JSON.parse(localStorage.getItem(key));
+    })    
+    searchResultsContainer.innerHTML = "";
+    renderWatchListHTML(watchListObjectArray);
+}
 
+//prints My Watchlist and removies watchlist items 
 function renderWatchListHTML(detailedMovieArray) {
     for (let i = 0; i < detailedMovieArray.length; i++) {
-        console.log(detailedMovieArray);
         searchResultsContainer.innerHTML += `
             <div class="movie-container" id="${detailedMovieArray[i].Title}-container">
                 <img src="${detailedMovieArray[i].Poster}" class="movie-poster">
@@ -133,13 +130,20 @@ function renderWatchListHTML(detailedMovieArray) {
                     <div class="movie-info-container">
                         <p class="run-time"><span class="number-of-minutes">${detailedMovieArray[i].Runtime}</span></p>
                         <p class="genres">${detailedMovieArray[i].Genre}</p>
-                        <button class="add-to-watchlist-btn" data-imdb="${detailedMovieArray[i].imdbID}" id="add-to-watchlist-btn-${detailedMovieArray[i].imdbID}"><img src="images/plus-button.png" class="plus-icon" id="watchlist-btn-image-${detailedMovieArray[i].imdbID}" data-imdb="${detailedMovieArray[i].imdbID}">Watchlist</button>
+                        <button class="add-to-watchlist-btn disabled" data-imdb="${detailedMovieArray[i].imdbID}" id="add-to-watchlist-btn-${detailedMovieArray[i].imdbID}"><i class="fa-solid fa-circle-minus"></i> Remove from Watchlist</button>
                     </div>
                     <p class="movie-synopsis">${detailedMovieArray[i].Plot}</p>
                 </div>
             </div>
         `
     }
- //   chooseWatchlistMovies(detailedMovieArray);
+    searchResultsContainer.addEventListener("click", function(e){
+        if (e.target.dataset.imdb) {
+            console.log(e.target.dataset.imdb);
+            localStorage.removeItem(`${e.target.dataset.imdb}`);
+            getWatchList();
+
+        }
+    });
+    
 }
- 

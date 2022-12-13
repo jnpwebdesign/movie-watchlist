@@ -206,3 +206,12 @@ h2 {
     opacity: 0.5;
     padding-left: 5px;
 }
+
+.fa-circle-minus {
+    font-size: 15px;
+    padding: 0 5px;
+    margin: 0;
+    background-color: transparent;
+    color: #A5A5A5;
+    font-weight: bold;
+}
