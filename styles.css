@@ -8,6 +8,7 @@ html, body {
 body {
     font-family:'Inter', sans-serif;
 }
+
 header {
     background-image: url("images/THJJRUhNlEc.png");
     background-size: cover;
@@ -214,4 +215,104 @@ h2 {
     background-color: transparent;
     color: #A5A5A5;
     font-weight: bold;
+}
+/*------ Media Queries------- */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    /* header */
+    h1 {
+        font-size: 3.2rem;
+    }
+    
+    .view-my-watchlist-btn {
+        font-size: 1.5rem;
+    }
+    
+    #search-input {
+        font-size: 18px;
+    }
+    
+
+    #search-btn {
+        font-size: 18px;
+    }
+
+    /* main */
+    
+    .movie-poster {
+        height: calc(130px * 1.4848);
+        width: 130px;
+    }
+    
+    
+    h2 {
+        font-size: 22px;
+    }
+    
+    .imdb-rating {
+        font-size: 14px;
+    }
+    
+    .run-time, .number-of-minutes, .genres, .add-to-watchlist-btn {
+        font-size: 16px;
+    }
+    
+    .genres, .add-to-watchlist-btn {
+        margin-left: 30px;
+    }
+
+    .movie-synopsis {
+        font-size: 16px;
+        line-height: 22px;
+    }
+}
+
+@media (min-width: 1024px) {
+
+    /* header */
+    h1 {
+        font-size: 3.4rem;
+    }
+    
+    .view-my-watchlist-btn {
+        font-size: 1.8rem;
+    }
+    
+    #search-input {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    #search-btn {
+        font-size: 20px;
+    }
+
+    /* main */
+    
+    .movie-poster {
+        height: calc(150px * 1.4848);
+        width: 150px;
+    }
+    
+    h2 {
+        font-size: 24px;
+    }
+    
+    .imdb-rating {
+        font-size: 16px;
+    }
+    
+    .run-time, .number-of-minutes, .genres, .add-to-watchlist-btn {
+        font-size: 18px;
+    }
+    
+    .genres, .add-to-watchlist-btn {
+        margin-left: 60px;
+    }
+
+    .movie-synopsis {
+        font-size: 20px;
+        line-height: 24px;
+    }
 }
