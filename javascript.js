@@ -25,10 +25,8 @@ async function getDetailedMovieData(movieArray) {
     for (let i = 0; i < movieArray.length; i++) {
         const res = await fetch(`https://www.omdbapi.com/?i=${movieArray[i].imdbID}&apikey=c92898b8`);
         data = await res.json();
-        console.log(data.Ratings);
         detailedMovieArray.push(data);
-    }
-       
+    } 
     renderHTML(detailedMovieArray); 
 }
 
@@ -64,8 +62,7 @@ function renderHTML(detailedMovieArray) {
 function chooseWatchlistMovies(detailedMovieArray) {
     watchListKeys = Object.keys(localStorage);
     searchResultsContainer.addEventListener("click", function(e) { 
-        if (e.target.dataset.imdb) {      
-            console.log(e.target.dataset.imdb)                                     //if user clicks +watchlist button
+        if (e.target.dataset.imdb) {                                      //if user clicks +watchlist button
             if (watchListKeys.indexOf(e.target.dataset.imdb) === -1) {          //check if movie is in local storage. If not
                 for (let movie of detailedMovieArray) {                         // loop through movies
                     if (movie.imdbID === e.target.dataset.imdb) {               
@@ -74,7 +71,6 @@ function chooseWatchlistMovies(detailedMovieArray) {
                     };    
                 } 
             } else if (watchListKeys.indexOf(e.target.dataset.imdb) >= 0 ) {//if movie already exists in local storage
-                console.log(e.target.dataset.imdb)   
                 for (let movie of detailedMovieArray) {
                     if (movie.imdbID === e.target.dataset.imdb) {
                         localStorage.removeItem(`${e.target.dataset.imdb}`);
@@ -141,7 +137,7 @@ function renderWatchListHTML(watchListObjectArray) {
 
     }
 
-    //user clicks "remove from watchlist" and movie is removed from local storage 
+//user clicks "remove from watchlist" and movie is removed from local storage 
     searchResultsContainer.addEventListener("click", function(e){
         watchListKeys = Object.keys(localStorage);
         if (e.target.dataset.imdbwatchlist) {
@@ -154,6 +150,5 @@ function renderWatchListHTML(watchListObjectArray) {
             }
         }
 
-    });
-    
+    });   
 }
