@@ -25,6 +25,8 @@ async function getDetailedMovieData(movieArray) {
     for (let i = 0; i < movieArray.length; i++) {
         const res = await fetch(`https://www.omdbapi.com/?i=${movieArray[i].imdbID}&apikey=c92898b8`);
         data = await res.json();
+//        let filteredMovies = data.filter(data => data.Ratings != [])
+//        detailedMovieArray.push(filteredMovies);
         detailedMovieArray.push(data);
     }   
     renderHTML(detailedMovieArray); 
@@ -32,54 +34,74 @@ async function getDetailedMovieData(movieArray) {
 
 //prints detailed movie information about each movie
 function renderHTML(detailedMovieArray) {
+    watchListKeys = Object.keys(localStorage);
     for (let i = 0; i < detailedMovieArray.length; i++) {
-        searchResultsContainer.innerHTML += `
-            <div class="movie-container" id="${detailedMovieArray[i].Title}-container">
-                <img src="${detailedMovieArray[i].Poster}" class="movie-poster">
-                <div class="movie-details-container">
-                    <div class="movie-title-container">
-                        <h2 class="movie-title">${detailedMovieArray[i].Title}<img src="images/imdb-star.png" class="star-icon"><span class="imdb-rating">${detailedMovieArray[i].Ratings[0].Value}</span></h2>
+        if (watchListKeys.includes(detailedMovieArray[i].imdbID)) {
+            searchResultsContainer.innerHTML += `
+                <div class="movie-container" id="${detailedMovieArray[i].Title}-container">
+                    <img src="${detailedMovieArray[i].Poster}" class="movie-poster">
+                    <div class="movie-details-container">
+                        <div class="movie-title-container">
+                            <h2 class="movie-title">${detailedMovieArray[i].Title}<img src="images/imdb-star.png" class="star-icon"><span class="imdb-rating">${detailedMovieArray[i].Ratings[0].Value}</span></h2>
+                        </div>
+                        <div class="movie-info-container">
+                            <p class="run-time"><span class="number-of-minutes">${detailedMovieArray[i].Runtime}</span></p>
+                            <p class="genres">${detailedMovieArray[i].Genre}</p>
+                            <button class="add-to-watchlist-btn grayed-out" data-imdb="${detailedMovieArray[i].imdbID}" id="add-to-watchlist-btn-${detailedMovieArray[i].imdbID}">
+                                <i class="fa-solid fa-circle-plus"></i>
+                                Watchlist
+                            </button>
+                        </div>
+                        <p class="movie-synopsis">${detailedMovieArray[i].Plot}</p>
                     </div>
-                    <div class="movie-info-container">
-                        <p class="run-time"><span class="number-of-minutes">${detailedMovieArray[i].Runtime}</span></p>
-                        <p class="genres">${detailedMovieArray[i].Genre}</p>
-                        <button class="add-to-watchlist-btn" data-imdb="${detailedMovieArray[i].imdbID}" id="add-to-watchlist-btn-${detailedMovieArray[i].imdbID}"><img src="images/plus-button.png" class="plus-icon" id="watchlist-btn-image-${detailedMovieArray[i].imdbID}" data-imdb="${detailedMovieArray[i].imdbID}">Watchlist</button>
-                    </div>
-                    <p class="movie-synopsis">${detailedMovieArray[i].Plot}</p>
                 </div>
-            </div>
-        `
+            `
+        } else {
+            searchResultsContainer.innerHTML += `
+                <div class="movie-container" id="${detailedMovieArray[i].Title}-container">
+                    <img src="${detailedMovieArray[i].Poster}" class="movie-poster">
+                    <div class="movie-details-container">
+                        <div class="movie-title-container">
+                            <h2 class="movie-title">${detailedMovieArray[i].Title}<img src="images/imdb-star.png" class="star-icon"><span class="imdb-rating">${detailedMovieArray[i].Ratings[0].Value}</span></h2>
+                        </div>
+                        <div class="movie-info-container">
+                            <p class="run-time"><span class="number-of-minutes">${detailedMovieArray[i].Runtime}</span></p>
+                            <p class="genres">${detailedMovieArray[i].Genre}</p>
+                            <button class="add-to-watchlist-btn" data-imdb="${detailedMovieArray[i].imdbID}" id="add-to-watchlist-btn-${detailedMovieArray[i].imdbID}">
+                                <i class="fa-solid fa-circle-plus"></i>
+                                Watchlist
+                            </button>
+                        </div>
+                        <p class="movie-synopsis">${detailedMovieArray[i].Plot}</p>
+                    </div>
+                </div>
+            `
+
+        }
+        
     }
     chooseWatchlistMovies(detailedMovieArray);
 }
 
-//adds/deletes chosen movies to watchlist and local storage
+//adds/deletes chosen movies from search results to watchlist and local storage
 function chooseWatchlistMovies(detailedMovieArray) {
+    watchListKeys = Object.keys(localStorage);
     searchResultsContainer.addEventListener("click", function(e) { 
-        if (e.target.dataset.imdb) {
-            let currentMovie = e.target.dataset.imdb
-            watchListKeys = Object.keys(localStorage);
-            if (watchListKeys.indexOf(currentMovie) === -1) {
+        if (e.target.dataset.imdb) {                                            //if user clicks +watchlist button
+            if (watchListKeys.indexOf(e.target.dataset.imdb) === -1) {          //check if movie is in local storage. If not
+                for (let movie of detailedMovieArray) {                         // loop through movies
+                    if (movie.imdbID === e.target.dataset.imdb) {               
+                        localStorage.setItem(`${e.target.dataset.imdb}`, JSON.stringify(movie)); //add movie to local storage
+                        document.getElementById(`add-to-watchlist-btn-${e.target.dataset.imdb}`).classList.add("grayed-out");
+                    };    
+                } 
+            } else if (watchListKeys.indexOf(e.target.dataset.imdb) >= 0 ) {//if movie already exists in local storage
                 for (let movie of detailedMovieArray) {
-                    if (movie.imdbID === currentMovie) {
-                        localStorage.setItem(`${currentMovie}`, JSON.stringify(movie));
-                        document.getElementById(`watchlist-btn-image-${currentMovie}`).disabled;
-                        document.getElementById(`add-to-watchlist-btn-${currentMovie}`).disabled;
-                        document.getElementById(`add-to-watchlist-btn-${currentMovie}`).classList.toggle("grayed-out");
-                        document.getElementById(`watchlist-btn-image-${currentMovie}`).classList.toggle("grayed-out");        
+                    if (movie.imdbID === e.target.dataset.imdb) {
+                        localStorage.removeItem(`${e.target.dataset.imdb}`);
+                        document.getElementById(`add-to-watchlist-btn-${e.target.dataset.imdb}`).classList.remove("grayed-out");
                     }
-                }       
-             } else if (watchListKeys.indexOf(currentMovie) >= 0 ) {
-                for (let movie of detailedMovieArray) {
-                    if (movie.imdbID === currentMovie) {
-                        localStorage.removeItem(`${currentMovie}`);
-                        document.getElementById(`add-to-watchlist-btn-${currentMovie}`).classList.toggle("grayed-out");
-                        document.getElementById(`watchlist-btn-image-${currentMovie}`).classList.toggle("grayed-out");
-                        document.getElementById(`watchlist-btn-image-${currentMovie}`).disabled === false;
-                        document.getElementById(`add-to-watchlist-btn-${currentMovie}`).disabled === false;    
-                    }
-                }  
-            
+                }     
             }
         }  
     });
@@ -91,7 +113,7 @@ const displayEmptyWatchListMessage = () => {
             searchResultsContainer.innerHTML = `
                 <p class="no-watchlist">No watchlist yet. 
                     <br> 
-                    <br> Use the box above to search for movies, then click the <img src="images/plus-button.png" class="plus-icon-watchlist"> Watchlist button to add them to your watchlist.
+                    <br> Use the box above to search for movies, then click the <i class="fa-solid fa-circle-plus"></i> Watchlist button to add them to your watchlist.
                 </p>
             `
 }
@@ -115,31 +137,44 @@ function getWatchList() {
     renderWatchListHTML(watchListObjectArray);
 }
 
-//prints My Watchlist and removies watchlist items 
-function renderWatchListHTML(detailedMovieArray) {
-    for (let i = 0; i < detailedMovieArray.length; i++) {
+//prints My Watchlist
+function renderWatchListHTML(watchListObjectArray) {
+    for (let i = 0; i < watchListObjectArray.length; i++) {
         searchResultsContainer.innerHTML += `
-            <div class="movie-container" id="${detailedMovieArray[i].Title}-container">
-                <img src="${detailedMovieArray[i].Poster}" class="movie-poster">
-                <div class="movie-details-container">
+            <div class="movie-container" id="${watchListObjectArray[i].Title}-container">
+                <img src="${watchListObjectArray[i].Poster}" class="movie-poster">
+                <div class="movie-details-container" id="watchlist-movie-details-container">
                     <div class="movie-title-container">
-                        <h2 class="movie-title">${detailedMovieArray[i].Title}<img src="images/imdb-star.png" class="star-icon"><span class="imdb-rating">${detailedMovieArray[i].Ratings[0].Value}</span></h2>
+                        <h2 class="movie-title">${watchListObjectArray[i].Title}<img src="images/imdb-star.png" class="star-icon"><span class="imdb-rating">${watchListObjectArray[i].Ratings[0].Value}</span></h2>
                     </div>
                     <div class="movie-info-container">
-                        <p class="run-time"><span class="number-of-minutes">${detailedMovieArray[i].Runtime}</span></p>
-                        <p class="genres">${detailedMovieArray[i].Genre}</p>
-                        <button class="add-to-watchlist-btn disabled" data-imdb="${detailedMovieArray[i].imdbID}" id="add-to-watchlist-btn-${detailedMovieArray[i].imdbID}"><i class="fa-solid fa-circle-minus"></i> Remove from Watchlist</button>
+                        <p class="run-time"><span class="number-of-minutes">${watchListObjectArray[i].Runtime}</span></p>
+                        <p class="genres">${watchListObjectArray[i].Genre}</p>
+                        <button class="remove-from-watchlist-btn" data-imdbwatchlist="${watchListObjectArray[i].imdbID}" id="remove-from-watchlist-btn-${watchListObjectArray[i].imdbID}">
+                            <i class="fa-solid fa-circle-minus"></i> 
+                            Remove from Watchlist
+                        </button>
                     </div>
-                    <p class="movie-synopsis">${detailedMovieArray[i].Plot}</p>
+                    <p class="movie-synopsis">${watchListObjectArray[i].Plot}</p>
                 </div>
             </div>
         `
+
     }
+
+    //user clicks "remove from watchlist" and movie is removed from local storage 
     searchResultsContainer.addEventListener("click", function(e){
-        if (e.target.dataset.imdb) {
-            localStorage.removeItem(`${e.target.dataset.imdb}`);
+        watchListKeys = Object.keys(localStorage);
+        if (e.target.dataset.imdbwatchlist) {
+            localStorage.removeItem(`${e.target.dataset.imdbwatchlist}`);
             getWatchList();
+            for (let movie of watchListKeys) {
+                if (movie.imdbID === e.target.dataset.imdbwatchlist) {
+                    document.getElementById("watchlist-movie-details-container").classList.add("grayed-out");
+                }
+            }
         }
+
     });
     
 }

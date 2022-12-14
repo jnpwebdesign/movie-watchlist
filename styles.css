@@ -162,8 +162,11 @@ h2 {
     padding: 0;
 }
 
+.fa-circle-plus {
+    padding-right: 5px;
+}
 
-.add-to-watchlist-btn {
+.add-to-watchlist-btn, .remove-from-watchlist-btn {
     background-color: transparent;
     color: white;
     border: none;
@@ -262,6 +265,9 @@ h2 {
         margin-left: 30px;
     }
 
+    .fa-circle-plus {
+        padding-right: 6px;
+    }
     .movie-synopsis {
         font-size: 16px;
         line-height: 22px;
@@ -314,5 +320,9 @@ h2 {
     .movie-synopsis {
         font-size: 20px;
         line-height: 24px;
+    }
+
+    .fa-circle-plus {
+        padding-right: 7px;
     }
 }
